@@ -87,7 +87,7 @@
                         <div class="pt-3 cursor-hover-item" data-aos="fade-up" data-aos-delay="220" data-cursor-text="DATA SET & TASK" data-cursor-text-repeat="3">
                             <h5><i class="bi bi-2-square-fill"></i> 태스크 및 대회 진행 방식</h5>
                             <ul>
-                                <li>200개의 Class가 존재하는 이미지 분류 태스크가 주어질 예정이며, 데이터 셋을 비롯한 관련된 자세한 내용은 2025년 8월 9일 (목요일) 참가자 오리엔테이션 세션에서 공개됩니다.</li>
+                                <li>200개의 Class가 존재하는 이미지 분류 태스크가 주어질 예정이며, 데이터 셋을 비롯한 관련된 자세한 내용은 2025년 8월 9일 (토요일) 참가자 오리엔테이션 세션에서 공개됩니다.</li>
                                 <li>신청할 경우 학습 과정에 필요한 연산 처리를 위한 GPU 서버가 지원될 예정입니다. (학과 GPU)</li>
                                 <li>저학년들의 대회 참여를 돕기 위해 PyTorch BaseLine 코드가 제공될 예정입니다.</li>
                                 <li>제공되는 AI 개발 환경 관련 교육을 대회 OT에서 진행할 예정입니다.</li>
@@ -132,10 +132,7 @@
                             </ul>
                             <div class="row">
                                 <div class="col">
-                                    <img src="/dist/res/image/contest/coding/poster/AI_Challenge[2025]_p1.jpg" height="320" class="mx-auto d-block">
-                                </div>
-                                <div class="col p-3 p-sm-0 p-lg-3 p-xxl-0">
-                                    <img src="/dist/res/image/contest/coding/poster/AI_Challenge[2025]_p2.jpg" height="320" class="mx-auto d-block">
+                                    <img src="/dist/res/image/contest/coding/poster/AI_Competition[2025].jpg" height="320" class="mx-auto d-block">
                                 </div>
                             </div>
                         </div>
@@ -167,17 +164,32 @@
                             <h5 id="participants_count">{participants}</h5>
                             <h6>참가자</h6>
                         </div>
-                        <div id="participants_status_chart" data="0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0"></div>
+                        <div id="participants_status_chart" data="0, 0, 0, 0, 0, 0" api ="https://daiv-cnu.duckdns.org/contest/ai_competition[2025]/participant/list"></div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 description">
                 <div class="pt-4">
                     <br><br>
-                    <h6 id="participants_count_desc">대회에 관심이 있으신가요?<br>어서 팀을 구성하고 참가신청을 해보세요! 지금까지 {participants}팀이 신청했다네요!</h6>
-                    <a href="https://docs.google.com/forms/d/e/"
-                       class="btn btn-light rounded-pill cursor-hover-item mt-3 mb-4"
-                       data-cursor-text="TAKE PART IN!" data-cursor-text-repeat="3">대회 참가 신청하기</a>
+                    <h6 id="participants_count_desc">
+                        대회에 관심이 있으신가요?<br>
+                        어서 팀을 구성하고 참가신청을 해보세요! 지금까지 {participants}팀이 신청했다네요!
+                    </h6>
+
+                    <!-- details/summary 로 클릭 시 안내문구 토글 -->
+                    <details class="mt-3 mb-4">
+                        <summary
+                                class="btn btn-light rounded-pill cursor-hover-item"
+                                data-cursor-text="TAKE PART IN!" data-cursor-text-repeat="3"
+                        >
+                            대회 참가 신청하기
+                        </summary>
+                        <div class="mt-2 text-danger">
+                            아직 신청 기간이 아닙니다.<br>
+                            신청 기간: 2025년 8월 1일 ~ 8월 8일
+                        </div>
+                    </details>
+
                     <br><br>
                 </div>
             </div>
