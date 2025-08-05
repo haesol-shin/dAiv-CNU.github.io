@@ -231,7 +231,7 @@
 }
 
 #team .selector-container {
-    text-align: right;
+    text-align: center;
 }
 
 #team .selector,
@@ -241,23 +241,24 @@
 }
 
 #team .selector-controller {
-    color: #F19F4D;
-    border-color: #F19F4DE0;
+    color: #fff;
+    background: #cfb989;
+    padding: 6px 12px;
 }
 
 #team .selector-controller.flipped {
     color: #fff;
-    background: #F19F4D;
 }
 
 #team .selector {
-    color: rgba(54, 57, 61, 0.75);
-    border-color: rgba(54, 57, 61, 0.45);
+    color: #fff;
+    background: #F19F4D;
+    border-color: transparent;
 }
 
 #team .selector.active {
     color: #fff;
-    background: rgba(54, 57, 61, 0.8);
+    background: #F3AA60;
 }
 
 #team .member {
@@ -370,13 +371,14 @@
 }
 
 #programs .selector-container {
-    text-align: right;
+    text-align: center;
 }
 
 #programs .selector,
 #programs .selector-controller {
     margin: 0 8px 8px;
     padding: 6px 12px;
+
 }
 
 #programs .selector-controller {
