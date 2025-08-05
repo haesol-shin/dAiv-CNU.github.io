@@ -55,6 +55,7 @@ def enable_navigation():
     def navbar_click(event):
         # fix default location error
         event.preventDefault()
+        window.location.href = event.target.hash
 
         # set mobile
         if 'navbar-mobile' in navbar.classList:
