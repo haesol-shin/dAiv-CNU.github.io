@@ -258,6 +258,41 @@ username_messages = lambda u: f"{int(u.value)+1}번째 팀을 선택하셨습니
 password_messages = lambda p: "Looks good!" if p.value else (_ for _ in ()).throw(ValueError), lambda p: "비밀번호는 비어있을 수 없습니다."
 file_input_messages = lambda f: f"{f.value}를 제출합니다." if f.value else (_ for _ in ()).throw(ValueError), lambda f: "제출할 파일이 선택되지 않았습니다."
 
+async def fetch_score_async(event):
+    print("get score")
+
+    team_name_text = document.getElementById('teamSearch')
+    team_name = document.getElementById('teamName')
+
+    team_name.text = team_name_text.value
+
+    url = "http://daivserver.duckdns.org:20261/leaderboard/" + f"{team_name_text.value}"
+
+    result = await window.fetch(url , {
+        'method': "GET",
+        'headers': {
+            'Authorization': f"Bearer {__WEB_CLIENT_TOKEN}"
+        }
+    })
+
+    if result.ok:
+        data = await result.json()
+
+        score_text = document.getElementById('teamScore')
+        rank_badge_text = document.getElementById('rankBadge')
+
+        score_text.text = data["score"]
+        rank_badge_text.text = data["rank"]
+
+    else:
+        score_text = document.getElementById('teamScore')
+        score_text.text = "팀 없음"
+
+
+
+def get_score_handler(event):
+    event.preventDefault()
+    aio.run(fetch_score_async(event))
 
 async def set_leaderboard_data():
     dataset = dict(teams=[], values=dict())  # prevent garbage collection
@@ -342,9 +377,23 @@ async def set_leaderboard_data():
             if force_open_hider:
                 opener.click()
 
+        _, start, end, _ = parse_timeline_data()
+        print(f"Leaderboard available from {start} to {end}.")
+
+        prompt_container = document.getElementById('imageprompt')
+
+        if prompt_container and start <= datetime.now().date() <= end:
+            prompt_container.classList.remove('d-none')
+
+            search_form = document.getElementById('searchForm')
+
+            search_form.bind("submit",get_score_handler)
+
+
+
         # set the leaderboard submission form
         form_container = document.getElementById('leaderboard_form_container')
-        _, start, end, _ = parse_timeline_data()
+
         if form_container and start <= datetime.now().date() <= end:
             form_container.classList.remove('d-none')
             form = document.getElementById('leaderboard_form')

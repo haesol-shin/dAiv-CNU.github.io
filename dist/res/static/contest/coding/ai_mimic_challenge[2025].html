@@ -171,7 +171,7 @@
     </div>
 </section>
 
-<section id="imageprompt" class="imageprompt" style="background: #262e3f; color: #fff">
+<section id="imageprompt" class="imageprompt d-none" style="background: #262e3f; color: #fff">
     <div class="container py-4" data-aos="fade-up">
         <br>
         <div class="row g-2">
@@ -182,12 +182,13 @@
                 <div class="prompt_container">
                     <div class="row g-1">
                         <div class="col-8">
-                        <textarea class="form-control"
+                        <textarea id="create_prompt"
+                                  class="form-control"
                                   rows="12"
                                   style="background-color: rgba(255, 255, 255, 0.08); border: 1px solid #4a5568; border-radius: 10px; color: white; transition: all 0.3s ease;"
                                   onfocus="this.style.borderColor='#667eea'; this.style.boxShadow='0 0 10px rgba(102, 126, 234, 0.3), 0 0 20px rgba(102, 126, 234, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)';"
                                   onblur="this.style.borderColor='#4a5568'; this.style.boxShadow='none';"></textarea>
-                            <button class="btn btn-primary mt-3 w-100" >이미지 결과</button>
+                            <button type = "button" id="create_image" class="btn btn-primary mt-3 w-100" >이미지 결과</button>
                         </div>
                         <div class="col-4">
                             <div class="generated-image-container mx-3"
@@ -217,7 +218,7 @@
                                    id="teamSearch"
                                    style="width: 150px; border-radius: 6px 0 0 6px"
                                    placeholder=" 팀명 입력">
-                            <button class="btn btn-primary" type="submit">검색</button>
+                            <button class="btn btn-primary" type="submit" id="search_score_btn">검색</button>
                         </div>
                     </form>
 
@@ -295,7 +296,7 @@
                     </div>
                     <div class="col-lg-5 col-md-10 col-sm-10 col-12">
                         <div class="input-group has-validation">
-                            <input type="file" id="leaderboard_form_file" class="form-control is-invalid" accept=".csv" required>
+                            <input type="file" id="leaderboard_form_file" class="form-control is-invalid" accept=".png" required>
                             <label class="input-group-text" for="leaderboard_form_file">파일 선택</label>
                             <div id="leaderboard_form_file_validation" class="invalid-feedback">
                                 제출할 파일을 선택해주세요.
