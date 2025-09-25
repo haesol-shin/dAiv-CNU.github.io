@@ -285,14 +285,33 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12">
                         <label class="visually-hidden" for="leaderboard_form_password">Password</label>
                         <input type="password" class="form-control is-invalid" id="leaderboard_form_password" placeholder="Password" aria-describedby="leaderboard_form_password_validation" required>
                         <div id="leaderboard_form_password_validation" class="invalid-feedback">
                             비밀번호를 입력해주세요.
                         </div>
                     </div>
-                    <div class="col-lg-5 col-md-10 col-sm-10 col-12">
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-12">
+                        <label class="visually-hidden" for="target_select">타겟 번호 선택</label>
+                        <select class="form-select is-invalid" id="target_select" aria-describedby="leaderboard_form_username_validation" required>
+                            <option value="">타겟 번호 선택</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        <div id="targer_select_validation" class="invalid-feedback">
+                            타켓 번호를 선택해주세요.
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-10 col-sm-10 col-12">
                         <div class="input-group has-validation">
                             <input type="file" id="leaderboard_form_file" class="form-control is-invalid" accept=".png" required>
                             <label class="input-group-text" for="leaderboard_form_file">파일 선택</label>
