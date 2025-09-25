@@ -130,6 +130,81 @@ aio.run(set_iframe())
 
 
 ########################################################################################################################
+# prompt
+########################################################################################################################
+def submit_prompt(url):
+    def wrapped(e):
+        e.preventDefault()
+
+        modal_body = document.getElementById('leaderboard_modal_body_text')
+        launcher = document.getElementById('leaderboard_modal_launcher')
+        prompt = document.getElementById('create_image') 
+        image_display_area = document.getElementById('generatedimage')
+
+        try:
+            modal_body.innerHTML = f"프롬프트를 제출 중 입니다.<br>창을 닫지 말고 잠시만 기다려주세요..."
+            launcher.click()
+
+            async def Submit():
+                form_data = window.FormData.new()
+                form_data.append("prompt", prompt.value)
+
+                try:
+                    result = await window.fetch(url, {
+                        'method': "POST",
+                        'headers': {
+                            'Authorization': f"Bearer {__WEB_CLIENT_TOKEN}",
+                            'Accept': 'image/png'
+                        },
+                        'body': form_data
+                    })
+
+                    if result.status == 200:
+                        image_blob = await result.blob()
+
+                        reader = window.FileReader.new()
+                        reader_promise = window.Promise.new(lambda resolve, reject: (
+                            setattr(reader, 'onloadend', lambda _: resolve(reader.result)),
+                            setattr(reader, 'onerror', lambda _: reject("파일 읽기 실패")),
+                            reader.readAsDataURL(image_blob)
+                        ))
+                        base64_image_data = await reader_promise
+
+
+                        if image_display_area:
+                            image_display_area.innerHTML = '' 
+                            img_tag = document.createElement('img')
+                            img_tag.src = base64_image_data
+                            img_tag.alt = "Generated Image"
+                            img_tag.classList.add('img-fluid', 'mt-3')
+                            image_display_area.appendChild(img_tag)
+
+                        modal_body.innerHTML = "프롬프트 제출 및 이미지 생성이 완료되었습니다!"
+
+
+                    else:
+                        error_data = await result.json() # 서버가 에러를 JSON으로 보낸다고 가정
+                        modal_body.innerHTML = f"이미지 생성에 실패했습니다. 다시 시도해주세요.<br>사유: {error_data.get('detail', '알 수 없는 오류')}"
+                        if image_display_area:
+                            image_display_area.innerHTML = '<div class="alert alert-danger" role="alert">이미지 생성 실패!</div>'
+
+                except Exception as fetch_error:
+                    modal_body.innerHTML = f"서버 통신 중 오류 발생: {str(fetch_error)}"
+                    if image_display_area:
+                        image_display_area.innerHTML = '<div class="alert alert-danger" role="alert">이미지 로드 중 오류 발생!</div>'
+                    traceback.print_exc()
+
+                finally:
+                    pass
+
+            aio.run(Submit())
+
+        except Exception as _:
+            traceback.print_exc()
+    return wrapped
+
+
+########################################################################################################################
 # Leaderboard settings
 ########################################################################################################################
 def open_leaderboard(e):
