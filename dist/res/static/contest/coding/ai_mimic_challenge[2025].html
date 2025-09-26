@@ -185,6 +185,7 @@
                             <textarea id="create_prompt"
                                       class="form-control"
                                       rows="12"
+                                      placeholder="여기에 작성해주세요"
                                       style="background-color: transparent; border: 1px solid rgba(107, 114, 128, 0.25); border-radius: 6px; box-shadow: 0 4px 12px rgba(107, 114, 128, 0.15);"></textarea>
                             <button type = "button" id="create_image" class="btn btn-primary mt-3 w-100" >이미지 결과</button>
                         </div>
@@ -294,7 +295,7 @@
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-6 col-12">
                         <label class="visually-hidden" for="target_select">타겟 번호 선택</label>
-                        <select class="form-select is-invalid" id="target_select" aria-describedby="leaderboard_form_username_validation" required>
+                        <select class="form-select is-invalid" id="target_select" aria-describedby="leaderboard_form_target_validation" required>
                             <option value="">타겟 번호 선택</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -307,7 +308,7 @@
                             <option value="9">9</option>
                             <option value="10">10</option>
                         </select>
-                        <div id="targer_select_validation" class="invalid-feedback">
+                        <div id="leaderboard_form_target_validation" class="invalid-feedback">
                             타켓 번호를 선택해주세요.
                         </div>
                     </div>

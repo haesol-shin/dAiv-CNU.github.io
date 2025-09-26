@@ -268,15 +268,33 @@ def submit_leaderboard(url, team_list):
                 form_data = window.FormData.new()
                 form_data.append("csv_file", file, file.name)
 
-                result = await window.fetch(url + team_name, {
-                    'method': "POST",
-                    'headers': {
-                        'Authorization': f"Bearer {__WEB_CLIENT_TOKEN}",
-                        'username': base64.b64encode(team_name.encode('utf-8')).decode('utf-8'),
-                        'password': base64.b64encode(pass_word.encode('utf-8')).decode('utf-8')
-                    },
-                    'body': form_data
-                })
+                select_num = document.getElementById('target_select')
+
+                if select_num:
+                    select_num_submit = select_num.value
+                    print(select_num_submit)
+                    result = await window.fetch(url + team_name, {
+                        'method': "POST",
+                        'headers': {
+                            'Authorization': f"Bearer {__WEB_CLIENT_TOKEN}",
+                            'username': base64.b64encode(team_name.encode('utf-8')).decode('utf-8'),
+                            'password': base64.b64encode(pass_word.encode('utf-8')).decode('utf-8'),
+                            'target' : base64.b64encode(select_num_submit.encode('utf-8')).decode('utf-8'),
+                        },
+                        'body': form_data
+                    })
+                else:
+                    result = await window.fetch(url + team_name, {
+                        'method': "POST",
+                        'headers': {
+                            'Authorization': f"Bearer {__WEB_CLIENT_TOKEN}",
+                            'username': base64.b64encode(team_name.encode('utf-8')).decode('utf-8'),
+                            'password': base64.b64encode(pass_word.encode('utf-8')).decode('utf-8')
+                        },
+                        'body': form_data
+                    })
+
+
 
                 if result.status == 200:
                     fetched = await result.json()
@@ -311,6 +329,7 @@ def submit_leaderboard(url, team_list):
 username_messages = lambda u: f"{int(u.value)+1}번째 팀을 선택하셨습니다.", lambda u: "팀 이름이 올바르지 않습니다."
 password_messages = lambda p: "Looks good!" if p.value else (_ for _ in ()).throw(ValueError), lambda p: "비밀번호는 비어있을 수 없습니다."
 file_input_messages = lambda f: f"{f.value}를 제출합니다." if f.value else (_ for _ in ()).throw(ValueError), lambda f: "제출할 파일이 선택되지 않았습니다."
+target_messages = lambda t: f"{t.value}번째 타겟을 선택하셨습니다." if t.value else (_ for _ in ()).throw(ValueError), lambda t: "타겟이 선택되지 않았습니다."
 
 async def fetch_score_async(event):
     print("get score")
@@ -464,6 +483,10 @@ async def set_leaderboard_data():
                 team_selections.appendChild(option)
 
             form.onsubmit = submit_leaderboard(url=url, team_list=team_list)
+            target = document.getElementById('target_select')
+            validation = document.getElementById('leaderboard_form_target_validation')
+            if target and validation:
+                target.bind('change', watch_form(target, validation, target_messages))
             username = document.getElementById('leaderboard_form_username')
             validation = document.getElementById('leaderboard_form_username_validation')
             if username and validation:
