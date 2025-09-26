@@ -130,6 +130,60 @@ aio.run(set_iframe())
 
 
 ########################################################################################################################
+# prompt
+########################################################################################################################
+def submit_prompt(url):
+    def wrapped(e):
+        e.preventDefault()
+
+        prompt = document.getElementById('create_prompt')
+        image_display_area = document.getElementById('generatedimage')
+
+        try:
+            async def Submit():
+                form_data = window.FormData.new()
+                form_data.append("prompt", prompt.value)
+
+                try:
+                    result = await window.fetch(url, {
+                        'method': "POST",
+                        'headers': {
+                            'Accept': 'image/png'
+                        },
+                        'body': form_data
+                    })
+
+                    if result.status == 200:
+                        image_blob = await result.blob()
+                        
+                        img_tag = document.createElement('img')
+                        img_tag.src = window.URL.createObjectURL(image_blob)
+                        img_tag.alt = "Generated Image"
+                        img_tag.classList.add('img-fluid', 'mt-3')
+
+                        if image_display_area:
+                            image_display_area.innerHTML = '' 
+                            image_display_area.appendChild(img_tag)
+
+                    else:
+                        if image_display_area:
+                            image_display_area.innerHTML = '<div class="alert alert-danger" role="alert">이미지 생성 실패!</div>'
+
+                except Exception as _:
+                    if image_display_area:
+                        image_display_area.innerHTML = '<div class="alert alert-danger" role="alert">이미지 로드 중 오류 발생!</div>'
+                    traceback.print_exc()
+
+            aio.run(Submit())
+
+        except Exception as _:
+            traceback.print_exc()
+    return wrapped
+
+document['create_image'].bind('click', submit_prompt())
+
+
+########################################################################################################################
 # Leaderboard settings
 ########################################################################################################################
 def open_leaderboard(e):
