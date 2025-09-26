@@ -180,8 +180,6 @@ def submit_prompt(url):
             traceback.print_exc()
     return wrapped
 
-document['create_image'].bind('click', submit_prompt())
-
 
 ########################################################################################################################
 # Leaderboard settings
@@ -367,6 +365,46 @@ def get_score_handler(event):
     event.preventDefault()
     aio.run(fetch_score_async(event))
 
+
+def prompt_submit(event):
+    print("prompt_submit called")
+
+    async def submit():
+        prompt_form = document['prompt_image_container']
+        if prompt_form:
+            prompt_text_area = document['create_prompt']
+
+            prompt_text = prompt_text_area.value
+
+            result = await window.fetch(prompt_form.action, {
+                'method': "POST",
+                'headers': {
+                    'prompt': base64.b64encode(prompt_text.encode('utf-8')).decode('utf-8'),
+                }
+            })
+
+            if result.ok:
+                fetched = json.loads(await result.text())
+
+                mime_type = fetched['mime_type']
+                image_data = fetched['image_data']
+                image_url = f"data:{mime_type};base64,{image_data}"
+
+                file_path = fetched['file_path']
+                prompt_text_area.value = file_path
+
+                image_element = document['generatedimage']
+                image_element.src = image_url
+                image_element.style.display = "block"
+
+                placeholder = document['imageplaceholder']
+                placeholder.style.display = "none"
+
+            else:
+                window.alert("이미지 생성에 실패했습니다.")
+
+    aio.run(submit())
+
 async def set_leaderboard_data():
     dataset = dict(teams=[], values=dict())  # prevent garbage collection
     key_func = lambda x: x[0]  # do not define a function inside try-except block (Brython bug - undefined)
@@ -453,12 +491,16 @@ async def set_leaderboard_data():
         _, start, end, _ = parse_timeline_data()
         print(f"Leaderboard available from {start} to {end}.")
 
-        prompt_container = document.getElementById('imageprompt')
+        prompt_container = document.getElementById('image_prompt')
 
         if prompt_container and start <= datetime.now().date() <= end:
             prompt_container.classList.remove('d-none')
 
             search_form = document.getElementById('searchForm')
+            prompt_btn = document.getElementById('create_image_btn')
+
+            prompt_btn.bind('click', prompt_submit)
+            print("prompt_btn binded")
 
             search_form.bind("submit",get_score_handler)
 
