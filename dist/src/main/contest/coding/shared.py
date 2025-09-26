@@ -161,22 +161,14 @@ def submit_prompt(url):
 
                     if result.status == 200:
                         image_blob = await result.blob()
-
-                        reader = window.FileReader.new()
-                        reader_promise = window.Promise.new(lambda resolve, reject: (
-                            setattr(reader, 'onloadend', lambda _: resolve(reader.result)),
-                            setattr(reader, 'onerror', lambda _: reject("파일 읽기 실패")),
-                            reader.readAsDataURL(image_blob)
-                        ))
-                        base64_image_data = await reader_promise
-
+                        
+                        img_tag = document.createElement('img')
+                        img_tag.src = window.URL.createObjectURL(image_blob)
+                        img_tag.alt = "Generated Image"
+                        img_tag.classList.add('img-fluid', 'mt-3')
 
                         if image_display_area:
                             image_display_area.innerHTML = '' 
-                            img_tag = document.createElement('img')
-                            img_tag.src = base64_image_data
-                            img_tag.alt = "Generated Image"
-                            img_tag.classList.add('img-fluid', 'mt-3')
                             image_display_area.appendChild(img_tag)
 
                         modal_body.innerHTML = "프롬프트 제출 및 이미지 생성이 완료되었습니다!"
