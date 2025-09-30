@@ -397,11 +397,8 @@ def prompt_submit(event):
                 fetched = json.loads(await result.text())
 
                 mime_type = fetched['mime_type']
-                image_data = fetched['image_data']
+                image_data = fetched['base64_image']
                 image_url = f"data:{mime_type};base64,{image_data}"
-
-                file_path = fetched['file_path']
-                prompt_text_area.value = file_path
 
                 image_element = document['generatedimage']
                 image_element.src = image_url
